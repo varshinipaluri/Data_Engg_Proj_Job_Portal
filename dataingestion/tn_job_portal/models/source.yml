@@ -1,0 +1,10 @@
+# models/source.yml
+version: 2
+
+sources:
+  - name: job_postings
+    database: tn_job_portal  
+    schema: dw_raw
+    tables:
+      - name: tn_jobs_details
+        description: "Raw job postings data loaded via dbt seed"
