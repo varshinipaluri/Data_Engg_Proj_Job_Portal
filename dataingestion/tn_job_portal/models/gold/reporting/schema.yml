@@ -1,0 +1,8 @@
+version: 2
+
+models:
+  - name: hr_report
+    description: Final aggregated report for HR dashboard.
+
+  - name: job_seeker_report
+    description: Final aggregated report for Job Seeker dashboard.

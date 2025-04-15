@@ -1,0 +1,6 @@
+version: 2
+
+models:
+  - name: raw_job_postings
+    description: Raw job postings data loaded from source.
+    

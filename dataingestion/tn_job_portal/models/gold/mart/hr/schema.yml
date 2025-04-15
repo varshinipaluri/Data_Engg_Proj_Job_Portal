@@ -1,0 +1,17 @@
+version: 2
+
+models:
+  - name: kpi_experience_demand
+    description: KPI showing demand by experience level.
+
+  - name: kpi_gender_diversity
+    description: KPI showing gender distribution in postings.
+
+  - name: kpi_job_postings_by_company
+    description: KPI showing count of postings by company.
+
+  - name: kpi_location_demand
+    description: KPI showing job location demand.
+
+  - name: kpi_urgent_positions
+    description: KPI showing jobs tagged as urgent by HR.

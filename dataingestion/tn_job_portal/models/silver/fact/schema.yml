@@ -1,0 +1,14 @@
+version: 2
+
+models:
+  - name: fact_job_postings
+    description: Fact table linking job postings to dimensions.
+
+  - name: fact_job_postings_final
+    description: Final fact table used for mart and KPI derivation.
+
+  - name: fact_job_postings_skills_bridge
+    description: Bridge table linking job postings with skills.
+
+  - name: fact_job_postings_additional_skills_bridge
+    description: Bridge table linking job postings with additional skills.

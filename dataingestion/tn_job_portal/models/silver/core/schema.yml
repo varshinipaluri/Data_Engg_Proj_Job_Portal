@@ -1,0 +1,53 @@
+version: 2
+
+models:
+  - name: core_job_postings_transform
+    description: "This model applies business transformations to cleaned job postings data, including salary transformation, experience processing, gender standardization, age processing, and vacancy count."
+    columns:
+      - name: job_url
+        description: "The URL of the job posting."
+        tests:
+          - unique
+          - not_null
+      - name: job_title
+        description: "The title of the job position."
+        tests:
+          - not_null
+      - name: job_role
+        description: "The job role (or position) offered."
+      - name: industry_sector
+        description: "The sector/industry that the job belongs to."
+      - name: company
+        description: "The company offering the job."
+        tests:
+          - not_null
+      - name: location
+        description: "The location of the job."
+        tests:
+          - not_null
+      - name: gender_requirement
+        description: "The gender requirement for the job."
+      - name: min_age
+        description: "The minimum age limit for the job, if specified."
+      - name: max_age
+        description: "The maximum age limit for the job, if specified."
+      - name: experience_years
+        description: "The number of years of experience required for the job."
+      - name: job_type
+        description: "The type of job (e.g., full-time, part-time, remote)."
+      - name: application_deadline
+        description: "The deadline date for submitting applications."
+      - name: specialization
+        description: "The job specialization or focus area."
+      - name: skills
+        description: "The primary skills required for the job."
+      - name: additional_skills
+        description: "Additional skills beneficial but not required for the job."
+      - name: job_description
+        description: "The detailed description of job responsibilities and requirements."
+      - name: vacancies_count
+        description: "The number of available vacancies for the job."
+      - name: experience_level
+        description: "The experience level required for the job (e.g., Fresher, Junior, Senior, Executive)."
+      - name: salary_in_lpa
+        description: "The salary offered for the job, in Lakhs Per Annum (LPA)."

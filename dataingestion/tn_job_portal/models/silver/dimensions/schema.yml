@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: dim_company
+    description: Dimension table for companies.
+
+  - name: dim_experience_level
+    description: Dimension table for experience levels.
+
+  - name: dim_gender_requirement
+    description: Dimension table for gender-based hiring requirements.
+
+  - name: dim_industry_sector
+    description: Dimension table for industry sectors.
+
+  - name: dim_job_role
+    description: Dimension table for job roles.
+
+  - name: dim_location
+    description: Dimension table for locations.
+
+  - name: dim_skills
+    description: Dimension table for skills.
+
+  - name: dim_additional_skills
+    description: Dimension table for additional skills.
+
+  - name: dim_specialization
+    description: Dimension table for education specializations.

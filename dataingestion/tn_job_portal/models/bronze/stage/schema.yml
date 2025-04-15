@@ -1,0 +1,61 @@
+version: 2
+
+models:
+  - name: stg_job_postings_clean
+    description: Cleaned staging model for job postings. Applies standardization and cleaning rules.
+    config:
+      materialized: table
+      schema: bronze_staging
+      tags: ['stage_jobs']
+
+    columns:
+      - name: url
+        description: Unique job posting URL.
+
+      - name: job_title
+        description: Cleaned job title after applying standardization.
+
+      - name: job_role
+        description: Cleaned and standardized job role for the posting.
+
+      - name: industry_sector
+        description: Sector or domain of the job (e.g., IT, Healthcare).
+
+      - name: company
+        description: Name of the company offering the job.
+
+      - name: location
+        description: Geographical location of the job.
+
+      - name: job_type
+        description: Type of job (e.g., Full-time, Part-time).
+
+      - name: specialization
+        description: Educational specialization or required academic background.
+
+      - name: skills
+        description: Required primary skills for the job posting.
+
+      - name: additional_skills
+        description: Optional or preferred additional skills.
+
+      - name: job_description
+        description: Cleaned and standardized job description.
+
+      - name: openings
+        description: Number of available positions for the job.
+
+      - name: open_until
+        description: Last date to apply for the job.
+
+      - name: salary
+        description: Salary offered for the job posting.
+
+      - name: gender
+        description: Gender preference (if specified) for the posting.
+
+      - name: age_limit
+        description: Maximum age allowed for applicants.
+
+      - name: experience
+        description: Required years or level of experience.

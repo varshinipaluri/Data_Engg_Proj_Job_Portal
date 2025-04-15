@@ -1,0 +1,17 @@
+version: 2
+
+models:
+  - name: kpi_job_offers_by_type
+    description: KPI showing types of jobs offered.
+
+  - name: kpi_job_role_distribution_by_gender
+    description: KPI on job roles offered based on gender.
+
+  - name: kpi_job_vacancy_trends
+    description: Trends over time for job vacancies.
+
+  - name: kpi_location_opportunities
+    description: KPI showing opportunities by location.
+
+  - name: kpi_urgent_openings
+    description: Jobseeker view of urgent jobs.
