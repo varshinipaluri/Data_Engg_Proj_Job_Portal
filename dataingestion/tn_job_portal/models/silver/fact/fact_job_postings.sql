@@ -1,10 +1,11 @@
--- fact_job_postings.sql
-{{ config(
+{{
+  config(
     materialized='table',
     description='Fact table for job postings with foreign keys to dimensions',
-    schema='gold_mart',
-    tags=['mart_jobs']
-) }}
+    schema='facts',
+    tags=['facts']
+  )
+}}
 
 WITH base AS (
     SELECT * FROM {{ ref('core_job_postings_final') }}
@@ -12,9 +13,8 @@ WITH base AS (
 
 fact_data AS (
     SELECT
-        ROW_NUMBER() OVER (ORDER BY job_title) AS job_posting_id,
+        ROW_NUMBER() OVER (ORDER BY base.job_title, base.company, base.location) AS job_posting_id,  
 
-        -- Use the correct ID column names from dimensions
         comp.dim_company_id AS company_id,
         loc.dim_location_id AS location_id,
         role.dim_job_role_id AS job_role_id,
@@ -30,7 +30,9 @@ fact_data AS (
         base.salary_in_lpa,
         base.min_age,
         base.max_age,
-        base.experience_years
+        base.experience_years,
+        base.skills,
+        base.additional_skills,
 
     FROM base
     LEFT JOIN {{ ref('dim_company') }} comp ON base.company = comp.company
@@ -42,26 +44,22 @@ fact_data AS (
     LEFT JOIN {{ ref('dim_specialization') }} spec ON base.specialization = spec.specialization
 )
 
--- Reference bridge tables for multi-valued attributes
 SELECT
-    f.job_posting_id,
-    f.company_id,
-    f.location_id,
-    f.job_role_id,
-    f.industry_sector_id,
-    f.gender_requirement_id,
-    f.experience_level_id,
-    f.specialization_id,
-    f.job_type,
-    f.application_deadline,
-    f.vacancies_count,
-    f.salary_in_lpa,
-    f.min_age,
-    f.max_age,
-    f.experience_years
-FROM fact_data f
-
-LEFT JOIN {{ ref('fact_job_postings_skills_bridge') }} skill_bridge
-    ON f.job_posting_id = skill_bridge.job_posting_id
-LEFT JOIN {{ ref('fact_job_postings_additional_skills_bridge') }} addskill_bridge
-    ON f.job_posting_id = addskill_bridge.job_posting_id;
+    job_posting_id,
+    company_id,
+    location_id,
+    job_role_id,
+    industry_sector_id,
+    gender_requirement_id,
+    experience_level_id,
+    specialization_id,
+    job_type,
+    application_deadline,
+    vacancies_count,
+    salary_in_lpa,
+    min_age,
+    max_age,
+    experience_years,
+    skills,
+    additional_skills
+FROM fact_data

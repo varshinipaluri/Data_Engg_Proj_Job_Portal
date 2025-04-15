@@ -28,3 +28,4 @@ SELECT
   experience_level,
   salary_in_lpa
 FROM {{ ref('core_job_postings_transform') }}   
+

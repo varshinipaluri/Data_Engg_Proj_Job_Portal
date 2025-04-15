@@ -5,14 +5,14 @@
     tags=['bridge']
 ) }}
 
-WITH bridge_data AS (
-    SELECT
-        job_posting_id,
-        unnest(string_to_array({{ ref('fact_job_postings') }}.skills, '|')) AS skills_id
-    FROM {{ ref('fact_job_postings') }}
-)
+{{ create_bridge_table(
+    fact_table='fact_job_postings',  
+    fact_column='skills', 
+    dimension_table='dim_skills',
+    dimension_column='skills',
+    bridge_table_name='fact_job_postings_skills_bridge', 
+    delimiter='|'  
+) }}
 
-SELECT
-    job_posting_id,
-    skills_id
-FROM bridge_data;
+
+
