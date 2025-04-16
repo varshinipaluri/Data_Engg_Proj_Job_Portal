@@ -13,5 +13,6 @@
     bridge_table_name='fact_job_postings_additional_skills_bridge', 
     delimiter=','  
 ) }}    
+  
 
 

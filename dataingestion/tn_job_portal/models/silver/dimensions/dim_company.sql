@@ -5,3 +5,4 @@
 ) }}
 
 {{ create_dimension_table('dim_company', 'company') }}
+    

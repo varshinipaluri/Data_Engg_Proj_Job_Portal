@@ -4,4 +4,4 @@
     tags=['dimensions']
 ) }}
 
-{{ create_dimension_table('dim_job_Role', 'job_role') }}
+{{ create_dimension_table('dim_job_role', 'job_role') }}

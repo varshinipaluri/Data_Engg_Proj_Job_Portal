@@ -1,7 +1,7 @@
 -- models/gold/mart/job_seeker/kpi_urgent_openings.sql
 {{
   config(
-    materialized='view',
+    materialized='table',
     schema='gold_mart',
     tags=['jobseeker_kpis']
   )
@@ -15,6 +15,8 @@ SELECT
 FROM {{ ref('fact_job_postings_final') }} f
 JOIN {{ ref('dim_job_role') }} r ON f.job_role_id = r.dim_job_role_id
 JOIN {{ ref('dim_location') }} l ON f.location_id = l.dim_location_id
-WHERE f.application_deadline <= CURRENT_DATE + 7
+WHERE TRY_TO_DATE(f.application_deadline) IS NOT NULL
+  AND f.application_deadline <= CURRENT_DATE + 7
+  AND f.application_deadline >= CURRENT_DATE
   AND f.vacancies_count >= 2
 ORDER BY days_remaining, salary_in_lpa DESC

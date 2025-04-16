@@ -1,15 +1,15 @@
 --models\silver\fact\fact_job_postings_final.sql
 {{ config(
     materialized='table',
-    description='Final fact table for job postings with foreign keys to dimensions and multi-valued attributes',
     schema='facts',
     tags=['facts']
 ) }}
 
 WITH fact_data AS (
-    SELECT
+    SELECT distinct
 
         f.job_posting_id,
+        f.job_url,
         f.company_id,
         f.location_id,
         f.job_role_id,
@@ -17,7 +17,7 @@ WITH fact_data AS (
         f.gender_requirement_id,
         f.experience_level_id,
         f.specialization_id,
-        f.job_type,
+        f.job_type_id,
         f.application_deadline,
         f.vacancies_count,
         f.salary_in_lpa,
@@ -37,6 +37,7 @@ WITH fact_data AS (
 
 SELECT
     job_posting_id,
+    job_url,
     company_id,
     location_id,
     job_role_id,
@@ -44,7 +45,7 @@ SELECT
     gender_requirement_id,
     experience_level_id,
     specialization_id,
-    job_type,
+    job_type_id,
     application_deadline,
     vacancies_count,
     salary_in_lpa,

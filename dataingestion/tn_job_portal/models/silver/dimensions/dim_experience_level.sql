@@ -4,4 +4,4 @@
     tags=['dimensions']
 ) }}
 
-{{ create_dimension_table('Dim_Experience_Level', 'experience_level') }}
+{{ create_dimension_table('dim_experience_level', 'experience_level') }}

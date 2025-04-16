@@ -1,8 +1,11 @@
 version: 2
 
 models:
-  - name: kpi_job_offers_by_type
-    description: KPI showing types of jobs offered.
+  - name: kpi_job_offers_by_type_with_salary
+    description: KPI showing job offers by type with salary details.
+
+  - name: kpi_job_postings_by_experience
+    description: KPI showing job postings by experience.
 
   - name: kpi_job_role_distribution_by_gender
     description: KPI on job roles offered based on gender.

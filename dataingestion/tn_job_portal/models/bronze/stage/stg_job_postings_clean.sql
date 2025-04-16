@@ -35,7 +35,7 @@ SELECT
 
  --Other fields
   openings,
-  open_until,
+  TO_DATE(open_until, 'DD-MM-YYYY') AS open_until,
   salary ,
   gender,
   age_limit,

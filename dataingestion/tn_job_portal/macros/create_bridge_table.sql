@@ -12,9 +12,11 @@
             flattened.value::string AS {{ dimension_column }}
         FROM {{ ref(fact_table) }},
         LATERAL FLATTEN(input => SPLIT({{ ref(fact_table) }}.{{ fact_column }}, '{{ delimiter }}')) AS flattened
+        WHERE flattened.value IS NOT NULL
     )
-    SELECT
+    SELECT DISTINCT
         job_posting_id,
         {{ dimension_column }} AS {{ dimension_column }}_id
     FROM bridge_data
 {% endmacro %}
+

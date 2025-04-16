@@ -1,140 +1,69 @@
--- gold/reporting/hr_strategic_hiring_dashboard.sql
-{{
-  config(
+{{ config(
     materialized='table',
     schema='gold_reporting',
-    tags=['hr_dashboard']
-  )
-}}
+    tags=['hr_report']
+) }}
 
-WITH 
--- Sector experience analysis
-sector_stats AS (
-  SELECT 
-    industry_sector,
-    avg_experience_required,
-    median_experience,
-    job_count,
-    ROUND(job_count * 100.0 / SUM(job_count) OVER (), 1) AS sector_distribution_pct
-  FROM {{ ref('kpi_experience_demand') }}
-),
-
--- Gender diversity metrics
-gender_stats AS (
-  SELECT 
-    gender_requirement,
-    job_count,
-    potential_hires,
-    requirement_distribution AS percentage_of_total
-  FROM {{ ref('kpi_gender_diversity') }}
-),
-
--- Location-based demand
-location_stats AS (
-  SELECT 
-    location,
-    total_vacancies,
-    avg_salary,
-    hiring_sectors,
-    RANK() OVER (ORDER BY total_vacancies DESC) AS demand_rank
-  FROM {{ ref('kpi_location_demand') }}
-),
-
--- Urgent positions (using our fixed KPI)
-urgent_stats AS (
-  SELECT * FROM {{ ref('kpi_urgent_positions') }}
-),
-
--- Company hiring activity
-company_stats AS (
-  SELECT 
-    company,
-    total_job_postings,
-    total_vacancies,
-    ROUND(total_vacancies / NULLIF(total_job_postings, 0), 1) AS avg_vacancies_per_posting
-  FROM {{ ref('kpi_job_postings_by_company') }}
+WITH hr_report_data AS (
+    SELECT 
+        f.job_posting_id,
+        f.job_url,
+        f.application_deadline,
+        f.vacancies_count,
+        f.salary_in_lpa,
+        f.min_age,
+        f.max_age,
+        f.experience_years,
+        
+        -- Join with dimension tables
+        comp.company,
+        loc.location,
+        role.job_role,
+        spec.specialization,
+        ind.industry_sector,
+        gen.gender_requirement,
+        exp.experience_level,
+        jt.job_type,
+        
+        -- Corrected join with bridge tables
+        skill_bridge.skills_id AS skill_id,  -- Correct reference to bridge table column
+        addskill_bridge.additional_skills_id AS addskill_id  -- Correct reference to bridge table column
+        
+    FROM {{ ref('fact_job_postings_final') }} f
+    
+    -- Join with dimension tables
+    LEFT JOIN {{ ref('dim_company') }} comp ON f.company_id = comp.dim_company_id
+    LEFT JOIN {{ ref('dim_location') }} loc ON f.location_id = loc.dim_location_id
+    LEFT JOIN {{ ref('dim_job_role') }} role ON f.job_role_id = role.dim_job_role_id
+    LEFT JOIN {{ ref('dim_specialization') }} spec ON f.specialization_id = spec.dim_specialization_id
+    LEFT JOIN {{ ref('dim_industry_sector') }} ind ON f.industry_sector_id = ind.dim_industry_sector_id
+    LEFT JOIN {{ ref('dim_gender_requirement') }} gen ON f.gender_requirement_id = gen.dim_gender_requirement_id
+    LEFT JOIN {{ ref('dim_experience_level') }} exp ON f.experience_level_id = exp.dim_experience_level_id
+    LEFT JOIN {{ ref('dim_job_type') }} jt ON f.job_type_id = jt.dim_job_type_id
+    
+    -- Join with bridge tables for multi-valued attributes (corrected)
+    LEFT JOIN {{ ref('fact_job_postings_skills_bridge') }} skill_bridge ON f.job_posting_id = skill_bridge.job_posting_id
+    LEFT JOIN {{ ref('fact_job_postings_additional_skills_bridge') }} addskill_bridge ON f.job_posting_id = addskill_bridge.job_posting_id
 )
 
--- Main dashboard assembly
 SELECT 
-  'Sector Analysis' AS category,
-  industry_sector AS dimension,
-  avg_experience_required AS metric_value_1,
-  median_experience AS metric_value_2,
-  job_count AS metric_value_3,
-  sector_distribution_pct AS metric_value_4,
-  'Years of Experience' AS metric_label_1,
-  'Median Experience' AS metric_label_2,
-  'Job Count' AS metric_label_3,
-  'Sector Distribution %' AS metric_label_4
-FROM sector_stats
-
-UNION ALL
-
-SELECT 
-  'Gender Diversity',
-  gender_requirement,
-  job_count,
-  potential_hires,
-  percentage_of_total,
-  NULL,
-  'Job Postings',
-  'Potential Hires',
-  'Percentage of Total',
-  NULL
-FROM gender_stats
-
-UNION ALL
-
-SELECT 
-  'Location Demand',
-  location,
-  total_vacancies,
-  avg_salary,
-  demand_rank,
-  NULL,
-  'Total Vacancies',
-  'Avg Salary (LPA)',
-  'Demand Rank',
-  NULL
-FROM location_stats
-
-UNION ALL
-
-SELECT 
-  'Urgent Needs',
-  'All Positions',
-  jobs_closing_soon,
-  urgent_vacancies,
-  avg_days_remaining,
-  NULL,
-  'Jobs Closing Soon',
-  'Urgent Vacancies',
-  'Avg Days Remaining',
-  NULL
-FROM urgent_stats
-
-UNION ALL
-
-SELECT 
-  'Company Activity',
-  company,
-  total_job_postings,
-  total_vacancies,
-  avg_vacancies_per_posting,
-  NULL,
-  'Total Postings',
-  'Total Vacancies',
-  'Avg Vacancies/Posting',
-  NULL
-FROM company_stats
-
-ORDER BY 
-  category,
-  CASE category
-    WHEN 'Sector Analysis' THEN -job_count
-    WHEN 'Gender Diversity' THEN -job_count
-    WHEN 'Location Demand' THEN -total_vacancies
-    WHEN 'Urgent Needs' THEN -jobs_closing_soon
-    WHEN 'Company Activity' THEN -total_job_postings
-  END
+    job_posting_id,
+    job_url,
+    company,
+    location,
+    job_role,
+    specialization,
+    industry_sector,
+    gender_requirement,
+    experience_level,
+    job_type,
+    application_deadline,
+    vacancies_count,
+    salary_in_lpa,
+    min_age,
+    max_age,
+    experience_years,
+    skill_id,  -- Ensure correct reference to bridge column
+    addskill_id  -- Ensure correct reference to bridge column
+FROM hr_report_data
+ORDER BY application_deadline DESC

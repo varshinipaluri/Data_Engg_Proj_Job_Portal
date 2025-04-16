@@ -1,7 +1,8 @@
+-- models/bronze/stage/stg_job_postings_base.sql
 {{
   config(
     materialized='ephemeral',
-    tags=['stage_jobs']
+    tags=['stage_jobs'],
   )
 }}
 
@@ -23,5 +24,5 @@ SELECT
   description,
   skills,
   additional_skills
-
 FROM {{ ref('raw_job_postings') }}
+
