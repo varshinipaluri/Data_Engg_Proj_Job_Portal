@@ -1,5 +1,5 @@
 import requests
-from bs4 import BeautifulSoup, Comment
+from bs4 import BeautifulSoup
 import csv
 import time
 from urllib.parse import urljoin
@@ -8,7 +8,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 # Constants
 BASE_URL = "https://www.tnprivatejobs.tn.gov.in/Home/jobs/"
 NUM_PAGES = 139  # Adjust as needed
-OUTPUT_FILE = "tn_private_jobs_main.csv"
+OUTPUT_FILE = "tn_jobs_details.csv"
 DELAY = 2  # seconds between requests
 MAX_RETRIES = 3
 NUM_THREADS = 10  # Number of threads to run concurrently
@@ -18,7 +18,7 @@ HEADERS = {
 }
 
 def get_session():
-    """Create a requests session with retry logic"""
+
     session = requests.Session()
     adapter = requests.adapters.HTTPAdapter(max_retries=MAX_RETRIES)
     session.mount('http://', adapter)
@@ -26,7 +26,6 @@ def get_session():
     return session
 
 def get_job_links(page_url):
-    """Extract all job detail links from a listing page with retries"""
     session = get_session()
     for attempt in range(MAX_RETRIES):
         try:
@@ -47,14 +46,8 @@ def get_job_links(page_url):
                 return []
             time.sleep(DELAY * (attempt + 1))
 
-def clean_text(text):
-    """Clean and normalize text"""
-    if not text:
-        return 'N/A'
-    return ' '.join(text.strip().split())
-
 def scrape_job_details(job_url):
-    """Scrape job details from a single job page with comprehensive error handling"""
+
     session = get_session()
     for attempt in range(MAX_RETRIES):
         try:
@@ -89,8 +82,6 @@ def scrape_job_details(job_url):
                         next_sibling = icon.next_sibling
                         while next_sibling and not str(next_sibling).strip():
                             next_sibling = next_sibling.next_sibling
-                        if next_sibling:
-                            return clean_text(str(next_sibling))
                     return 'N/A'
                 except:
                     return 'N/A'
@@ -105,7 +96,7 @@ def scrape_job_details(job_url):
                                 break
                             if isinstance(sibling, str):
                                 salary_text += sibling
-                        return clean_text(salary_text)
+                        return salary_text
                     return 'N/A'
                 except:
                     return 'N/A'
@@ -196,7 +187,7 @@ def scrape_job_details(job_url):
             time.sleep(DELAY * (attempt + 1))
 
 def save_to_csv(job_data, filename):
-    """Save job data to CSV file"""
+
     if not job_data:
         print("No data to save")
         return False

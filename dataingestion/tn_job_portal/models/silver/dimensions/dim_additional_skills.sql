@@ -8,6 +8,6 @@
     'dim_additional_skills', 
     'additional_skills', 
     is_multivalued=True, 
-    delimiter=','
+    delimiter='|'
 ) }}
     

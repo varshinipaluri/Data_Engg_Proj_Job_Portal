@@ -1,0 +1,89 @@
+version: 2
+
+models:
+  - name: job_seeker_report
+    description: "Aggregated data for job seeker reports, including job postings, salary details, and other job attributes."
+    columns:
+      - name: job_posting_id
+        description: "Unique identifier for each job posting"
+        tests:
+          - not_null
+          - unique
+      - name: job_url
+        description: "URL of the job posting"
+      - name: company
+        description: "Name of the company offering the job"
+      - name: location
+        description: "Location of the job posting"
+      - name: job_role
+        description: "Job role for the position"
+      - name: specialization
+        description: "Specialization required for the role"
+      - name: industry_sector
+        description: "Industry sector of the company"
+      - name: gender_requirement
+        description: "Gender requirement for the job posting (e.g., male_only, female_only, any_gender)"
+      - name: experience_level
+        description: "Experience level required (e.g., Junior, Senior, Executive)"
+      - name: job_type
+        description: "Type of job (e.g., Full-time, Part-time, Contract)"
+      - name: application_deadline
+        description: "Deadline for job application"
+      - name: vacancies_count
+        description: "Number of available job openings"
+      - name: salary_in_lpa
+        description: "Salary for the job posting in Lakhs Per Annum (LPA)"
+      - name: min_age
+        description: "Minimum age required for the job posting"
+      - name: max_age
+        description: "Maximum age allowed for the job posting"
+      - name: experience_years
+        description: "Years of experience required for the job"
+      - name: skill_id
+        description: "Skill ID from the bridge table associated with the job posting"
+      - name: addskill_id
+        description: "Additional Skill ID from the bridge table associated with the job posting"
+
+  - name: hr_report
+    description: "Aggregated data for HR reports, including job postings, salary details, and other job attributes."
+    columns:
+      - name: job_posting_id
+        description: "Unique identifier for each job posting"
+        tests:
+          - not_null
+          - unique
+      - name: job_url
+        description: "URL of the job posting"
+      - name: company
+        description: "Name of the company offering the job"
+      - name: location
+        description: "Location of the job posting"
+      - name: job_role
+        description: "Job role for the position"
+      - name: specialization
+        description: "Specialization required for the role"
+      - name: industry_sector
+        description: "Industry sector of the company"
+      - name: gender_requirement
+        description: "Gender requirement for the job posting (e.g., male_only, female_only, any_gender)"
+      - name: experience_level
+        description: "Experience level required (e.g., Junior, Senior, Executive)"
+      - name: job_type
+        description: "Type of job (e.g., Full-time, Part-time, Contract)"
+      - name: application_deadline
+        description: "Deadline for job application"
+      - name: vacancies_count
+        description: "Number of available job openings"
+      - name: salary_in_lpa
+        description: "Salary for the job posting in Lakhs Per Annum (LPA)"
+      - name: min_age
+        description: "Minimum age required for the job posting"
+      - name: max_age
+        description: "Maximum age allowed for the job posting"
+      - name: experience_years
+        description: "Years of experience required for the job"
+      - name: skill_id
+        description: "Skill ID from the bridge table associated with the job posting"
+      - name: addskill_id
+        description: "Additional Skill ID from the bridge table associated with the job posting"
+

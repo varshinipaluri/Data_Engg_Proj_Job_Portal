@@ -23,7 +23,7 @@ SELECT
   -- Standardized special fields with the clean_special_field macro
   CAST({{ field_standardization('specialization') }} AS VARCHAR(1000)) AS specialization,
   CAST({{ field_standardization('skills') }} AS VARCHAR(10000)) AS skills,
-  CAST({{ field_standardization('additional_skills', 'not_specified', 'N/A') }} AS VARCHAR(10000)) AS additional_skills,
+  CAST({{ field_standardization('additional_skills') }} AS VARCHAR(10000)) AS additional_skills,
 
   -- Cleaned description
   CAST(
@@ -42,4 +42,3 @@ SELECT
   experience
 
 FROM {{ ref('stg_job_postings_base') }}
-

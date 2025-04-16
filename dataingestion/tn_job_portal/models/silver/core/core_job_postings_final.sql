@@ -8,9 +8,9 @@
 }}
 
 SELECT  
-  url AS job_url,
+  job_url, -- Removed redundant aliasing
   job_title,
-  job_role,
+  job_role, 
   industry_sector,
   company,  
   location,  
@@ -19,13 +19,15 @@ SELECT
   max_age,
   experience_years,
   job_type,  
-  open_until AS application_deadline, 
+  application_deadline, 
   specialization,
   skills,  
   additional_skills,  
   job_description,
   vacancies_count,
   experience_level,
+  annual_salary,
   salary_in_lpa
-FROM {{ ref('core_job_postings_transform') }}   
+FROM {{ ref('core_job_postings_transform') }}
+
 

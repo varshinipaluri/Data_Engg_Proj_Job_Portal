@@ -3,6 +3,7 @@
   config(
     materialized='table',
     schema='bronze_raw',
+    tags=['raw']
   )
 }}
 
