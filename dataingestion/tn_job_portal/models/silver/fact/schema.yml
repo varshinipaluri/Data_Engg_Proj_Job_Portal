@@ -9,3 +9,46 @@ models:
 
   - name: fact_job_postings_additional_skills_bridge
     description: Bridge table linking job postings with additional skills.
+
+  - name: fact_job_postings_final
+    description: "Fact table for job postings with foreign key references and bridge attributes"
+    columns:
+      - name: company_id
+        description: "Reference to company dimension"
+        tests:
+          - not_null
+
+      - name: location_id
+        description: "Reference to location dimension"
+        tests:
+          - not_null
+
+      - name: job_role_id
+        description: "Reference to job role dimension"
+        tests:
+          - not_null
+
+      - name: industry_sector_id
+        description: "Reference to industry sector dimension"
+        tests:
+          - not_null
+
+      - name: gender_requirement_id
+        description: "Reference to gender requirement dimension"
+        tests:
+          - not_null
+
+      - name: experience_level_id
+        description: "Reference to experience level dimension"
+        tests:
+          - not_null
+
+      - name: specialization_id
+        description: "Reference to specialization dimension"
+        tests:
+          - not_null
+
+      - name: job_type_id
+        description: "Reference to job type dimension"
+        tests:
+          - not_null
