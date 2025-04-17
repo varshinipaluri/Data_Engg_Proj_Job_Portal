@@ -25,7 +25,8 @@ WITH fact_data AS (
         base.max_age,
         base.experience_years,
         base.skills,
-        base.additional_skills
+        base.additional_skills,
+
 
     FROM {{ ref('core_job_postings_final') }} base  
     LEFT JOIN {{ ref('dim_company') }} comp ON base.company = comp.company

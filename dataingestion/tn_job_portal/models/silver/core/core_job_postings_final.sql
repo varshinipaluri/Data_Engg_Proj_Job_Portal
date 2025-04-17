@@ -8,7 +8,7 @@
 }}
 
 SELECT  
-  job_url, -- Removed redundant aliasing
+  job_url, 
   job_title,
   job_role, 
   industry_sector,

@@ -1,4 +1,4 @@
---models\gold\mart\hr\kpi_urgent_postions.sql
+--models\gold\mart\hr\kpi_urgent_positions.sql
 {{
   config(
     materialized='table',
@@ -8,10 +8,14 @@
 }}
 
 SELECT
-  COUNT(*) AS jobs_closing_soon,
-  SUM(vacancies_count) AS urgent_vacancies,
-  ROUND(AVG(DATEDIFF('day', CURRENT_DATE, application_deadline)), 1) AS avg_days_remaining
-FROM {{ ref('fact_job_postings_final') }}
-WHERE application_deadline BETWEEN CURRENT_DATE AND CURRENT_DATE + INTERVAL '15 DAY'
+  f.job_role_id, 
+  f.company_id,  
+  f.application_deadline, 
+  f.vacancies_count,  
+  DATEDIFF('day', CURRENT_DATE, f.application_deadline) AS days_until_closure  
+FROM {{ ref('fact_job_postings_final') }} AS f
+WHERE f.application_deadline BETWEEN CURRENT_DATE AND CURRENT_DATE + INTERVAL '15 DAY'  
+ORDER BY f.application_deadline ASC
+
 
 
